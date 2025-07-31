@@ -1,0 +1,114 @@
+name: erhs_app
+description: School App for ERHS
+
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.1.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  live_activities: any
+  firebase_messaging: any
+  logger: any
+  url_launcher: any
+  cupertino_icons: any
+  flutter_carousel_widget: any
+  firebase_core: any
+  cloud_firestore: any
+  firebase_storage: any
+  intl: any
+  firebase_auth: any
+  syncfusion_flutter_barcodes: any
+  provider: any
+  english_words: any
+  carousel_slider: any
+  youtube_player_iframe: any
+  visibility_detector: any
+  gradient_icon: any
+  lottie: any
+  liquid_pull_to_refresh: any
+  youtube_player_flutter: any
+  http: any
+  flutter_launcher_icons: any
+  custom_date_range_picker: any
+  animated_custom_dropdown: any
+  flutter_barcode_scanner: any
+  google_fonts: any
+  shared_preferences: any
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "lib/assets/img/favicon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "lib/assets/img/favicon.png"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+  windows:
+    generate: true
+    image_path: "lib/assets/img/favicon.png"
+    icon_size: 256 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "lib/assets/img/favicon.png"
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - lib/assets/animations/
+    - lib/assets/img/
+
+  fonts:
+    - family: Kanit
+      fonts:
+        - asset: fonts/Kanit/Kanit-Regular.ttf
+        - asset: fonts/Kanit/Kanit-Italic.ttf
+          style: italic
+        - asset: fonts/Kanit/Kanit-Bold.ttf
+          weight: 700
+    - family: ERHSApp
+      fonts:
+        - asset: fonts/ERHSApp/CustomIcons.ttf
+
+  # To add assets to your application, add an assets section, like this:
+  # assets:
+  #   - images/a_dot_burr.jpegr
+  #   - images/a_dot_ham.jpeg
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/assets-and-images/#resolution-aware
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/assets-and-images/#from-packages
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/custom-fonts/#from-packages
