@@ -120,7 +120,6 @@ class _EducatorRegisterPageState extends State<EducatorRegisterPage>
       await _fireStore.collection('users').doc(userCredential.user!.uid).set({
         'uid': userCredential.user!.uid,
         'email': '${emailController.text}@cnusd.k12.ca.us',
-        'password': passwordController.text,
       }, SetOptions(merge: false));
 
       return userCredential;

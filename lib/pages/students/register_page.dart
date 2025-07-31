@@ -121,7 +121,6 @@ class _RegisterPageState extends State<RegisterPage> with SingleTickerProviderSt
       _fireStore.collection('users').doc(userCredential.user!.uid).set({
         'uid' : userCredential.user!.uid,
         'email' : '${emailController.text}@students.cnusd.k12.ca.us',
-        'password' : passwordController.text,
       }, SetOptions(merge: false));
       return userCredential;
     } on FirebaseAuthException catch (e) {
