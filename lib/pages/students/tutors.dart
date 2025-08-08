@@ -84,7 +84,7 @@ class _TutorsState extends State<Tutors> {
       stream: db.collection('tutor').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const Text('error');
+          return Text('error: ${snapshot.error}');
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
