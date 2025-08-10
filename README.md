@@ -7,4 +7,4 @@ Did you use Hakatime to log your progress?: No, development of all features (inc
 
 **Ship URL:** https://hackclub.slack.com/archives/C0M8PUPU6/p1754856681152239
 
-**Video Demo URL:** (Updated version coming!)
+**Video Demo URL:** https://youtu.be/lXgeEuUqehI (updated version coming!)
