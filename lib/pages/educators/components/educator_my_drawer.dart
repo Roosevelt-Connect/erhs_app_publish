@@ -28,8 +28,7 @@ class _EducatorMyDrawerState extends State<EducatorMyDrawer> {
         Navigator.pop(context); // Use BuildContext safely
       }
     } on FirebaseAuthException catch (e) {
-      logger.e('FirebaseAuthException: ${e.message}',
-          e); // Log the error with logger
+      logger.e('FirebaseAuthException: ${e.message}'); // Log the error with logger
 
       if (e.code == "requires-recent-login") {
         await _reauthenticateAndDelete();
@@ -100,7 +99,7 @@ class _EducatorMyDrawerState extends State<EducatorMyDrawer> {
               Padding(
                 padding: const EdgeInsets.only(left: 25),
                 child: ListTile(
-                  title: const Text("S C A N  I D"),
+                  title: const Text("S C A N   I D"),
                   leading: const Icon(Icons.barcode_reader),
                   onTap: () {
                     Navigator.push(
@@ -130,7 +129,7 @@ class _EducatorMyDrawerState extends State<EducatorMyDrawer> {
               Padding(
                 padding: const EdgeInsets.only(left: 25),
                 child: ListTile(
-                  title: const Text("D E L E T E  A C C O U N T"),
+                  title: const Text("D E L E T E   A C C O U N T"),
                   leading: const Icon(Icons.delete),
                   onTap: () {
                     showDialog(

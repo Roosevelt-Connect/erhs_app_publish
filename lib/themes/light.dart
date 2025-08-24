@@ -9,6 +9,7 @@ ThemeData lightMode = ThemeData(
     inversePrimary: Colors.grey.shade900,
     inverseSurface: Color.fromARGB(255, 245, 244, 244),
     brightness: Brightness.light,
+    primaryContainer: Color.fromRGBO(232, 232, 234, 1)
   ),
   fontFamily: 'Kanit',
 );

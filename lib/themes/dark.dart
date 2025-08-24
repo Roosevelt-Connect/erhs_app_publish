@@ -9,6 +9,7 @@ ThemeData darkMode = ThemeData(
     inversePrimary: Colors.grey.shade300,
     inverseSurface: const Color.fromARGB(255, 20, 20, 20),
     brightness: Brightness.dark,
+    primaryContainer: Color.fromRGBO(56, 56, 56, 1)
   ),
   fontFamily: 'Kanit',
 );

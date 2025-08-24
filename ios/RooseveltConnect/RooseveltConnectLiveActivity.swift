@@ -2,111 +2,79 @@
 //  RooseveltConnectLiveActivity.swift
 //  RooseveltConnect
 //
-//  Created by Dev on 7/24/25.
+//  Created by Dev on 8/24/25.
 //
 
 import ActivityKit
 import WidgetKit
 import SwiftUI
 
-struct LiveActivitiesAppAttributes: ActivityAttributes, Identifiable {
-    public typealias LiveDeliveryData = ContentState // don't forget to add this line, otherwise, live activity will not display it.
+struct RooseveltConnectAttributes: ActivityAttributes {
+    public struct ContentState: Codable, Hashable {
+        // Dynamic stateful properties about your activity go here!
+        var emoji: String
+    }
 
-     public struct ContentState: Codable, Hashable { }
-     
-     var id = UUID()
+    // Fixed non-changing properties about your activity go here!
+    var name: String
 }
-
-// Create shared default with custom group
-let sharedDefault = UserDefaults(suiteName: "group.com.rooseveltconnect.liveactivities")!
 
 struct RooseveltConnectLiveActivity: Widget {
     var body: some WidgetConfiguration {
-        ActivityConfiguration(for: LiveActivitiesAppAttributes.self) { context in
-            let period = sharedDefault.string(forKey: context.attributes.prefixedKey("period")) ?? "Class"
-            let minutesLeft = sharedDefault.string(forKey: context.attributes.prefixedKey("minutesLeft")) ?? "--"
-
-            VStack(alignment: .leading, spacing: 8) {
-                HStack {
-                    Image(systemName: "book.fill")
-                        .foregroundColor(.white)
-                    Text(period)
-                        .font(.title2)
-                        .bold()
-                        .foregroundColor(.white)
-                }
-
-                HStack {
-                    Image(systemName: "clock.fill")
-                        .foregroundColor(.white.opacity(0.8))
-                    Text("\(minutesLeft) minutes remaining")
-                        .font(.subheadline)
-                        .foregroundColor(.white.opacity(0.9))
-                }
+        ActivityConfiguration(for: RooseveltConnectAttributes.self) { context in
+            // Lock screen/banner UI goes here
+            VStack {
+                Text("Hello \(context.state.emoji)")
             }
-            .padding()
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(LinearGradient(
-                        gradient: Gradient(colors: [.cyan, .blue]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    ))
-            )
-            .activityBackgroundTint(.clear) // Let the gradient show through
-            .activitySystemActionForegroundColor(.white)
+            .activityBackgroundTint(Color.cyan)
+            .activitySystemActionForegroundColor(Color.black)
 
         } dynamicIsland: { context in
             DynamicIsland {
+                // Expanded UI goes here.  Compose the expanded UI through
+                // various regions, like leading/trailing/center/bottom
                 DynamicIslandExpandedRegion(.leading) {
-                    VStack(alignment: .leading) {
-                        Text(context.attributes.id.uuidString.prefix(4)) // Optional unique ID
-                            .font(.caption2)
-                            .foregroundColor(.gray)
-                        Text(sharedDefault.string(forKey: context.attributes.prefixedKey("period")) ?? "Class")
-                            .font(.headline)
-                    }
+                    Text("Leading")
                 }
-
                 DynamicIslandExpandedRegion(.trailing) {
-                    Text("\(sharedDefault.string(forKey: context.attributes.prefixedKey("minutesLeft")) ?? "--") min left")
-                        .font(.subheadline)
+                    Text("Trailing")
                 }
-
                 DynamicIslandExpandedRegion(.bottom) {
-                    VStack(spacing: 4) {
-                        Text("You're in:")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                        Text(sharedDefault.string(forKey: context.attributes.prefixedKey("period")) ?? "Class")
-                            .bold()
-
-                        Text("Time remaining:")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                        Text("\(sharedDefault.string(forKey: context.attributes.prefixedKey("minutesLeft")) ?? "--") minutes")
-                            .font(.body)
-                            .bold()
-                    }
+                    Text("Bottom \(context.state.emoji)")
+                    // more content
                 }
             } compactLeading: {
-                Text(sharedDefault.string(forKey: context.attributes.prefixedKey("period"))?.prefix(1) ?? "?")
-                    .font(.caption)
+                Text("L")
             } compactTrailing: {
-                Text(sharedDefault.string(forKey: context.attributes.prefixedKey("minutesLeft")) ?? "--")
-                    .font(.caption)
+                Text("T \(context.state.emoji)")
             } minimal: {
-                Image(systemName: "clock")
+                Text(context.state.emoji)
             }
-            .widgetURL(URL(string: "https://www.roosevelt.edu"))
-            .keylineTint(Color.purple)
+            .widgetURL(URL(string: "http://www.apple.com"))
+            .keylineTint(Color.red)
         }
     }
 }
 
-extension LiveActivitiesAppAttributes {
-  func prefixedKey(_ key: String) -> String {
-    return "\(id)_\(key)"
-  }
+extension RooseveltConnectAttributes {
+    fileprivate static var preview: RooseveltConnectAttributes {
+        RooseveltConnectAttributes(name: "World")
+    }
+}
+
+extension RooseveltConnectAttributes.ContentState {
+    fileprivate static var smiley: RooseveltConnectAttributes.ContentState {
+        RooseveltConnectAttributes.ContentState(emoji: "😀")
+     }
+     
+     fileprivate static var starEyes: RooseveltConnectAttributes.ContentState {
+         RooseveltConnectAttributes.ContentState(emoji: "🤩")
+     }
+}
+
+#Preview("Notification", as: .content, using: RooseveltConnectAttributes.preview) {
+   RooseveltConnectLiveActivity()
+} contentStates: {
+    RooseveltConnectAttributes.ContentState.smiley
+    RooseveltConnectAttributes.ContentState.starEyes
 }

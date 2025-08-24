@@ -196,7 +196,7 @@ class _ChatPageState extends State<ChatPage> {
           widget.receiverUserID, _auth.currentUser!.uid),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const Text('Error loading messages');
+          return Text('Error loading messages: ${snapshot.error}');
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Text('Loading messages...');

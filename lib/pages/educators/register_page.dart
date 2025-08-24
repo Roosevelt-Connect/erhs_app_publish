@@ -130,7 +130,7 @@ class _EducatorRegisterPageState extends State<EducatorRegisterPage>
       Navigator.pop(context);
 
       // Log the error with logger
-      logger.e('Firebase Auth Exception: ${e.message}', e);
+      logger.e('Firebase Auth Exception: ${e.message}');
       return null;
     } catch (e) {
       if (!mounted) return null; // Ensure widget is still mounted

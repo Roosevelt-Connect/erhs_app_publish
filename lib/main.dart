@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import 'pages/educators/educator_auth_page.dart';
 import 'pages/students/auth_page.dart';
 import 'themes/theme_provider.dart';
@@ -6,8 +8,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:live_activities/live_activities.dart';
 import 'firebase_options.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -32,6 +32,13 @@ import 'package:url_launcher/url_launcher.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.manual,
+    overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom], // Shows both status and navigation bars
+  );
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Colors.blue[300]
+  ));
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -145,7 +152,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       children: [
                         Text(
                           "\n\nRoosevelt\nConnect",
-                          style: GoogleFonts.abhayaLibre(
+                          style: GoogleFonts.abel(
                             textStyle: TextStyle(fontSize: 45, color: Colors.white, fontWeight: FontWeight.bold)
                           ),
                           textAlign: TextAlign.center,

@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() => runApp(const MyApp());
 
@@ -18,6 +19,19 @@ String getWeekday() {
   final DateFormat formatter = DateFormat('EEEE');
   final String weekday = formatter.format(now);
   return weekday;
+}
+
+Future<void> replaceIds(List<int> newIds) async {
+  final docRef = FirebaseFirestore.instance
+      .collection('event_participants')
+      .doc('approved_ids');
+
+  if (newIds.isNotEmpty) {
+    await docRef.update({'ids': newIds});
+    debugPrint("✅ Successfully replaced IDs with ${newIds.length} new ones.");
+  } else {
+    debugPrint("⚠️ No IDs provided.");
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -719,21 +733,6 @@ class _EducatorAgendaState extends State<EducatorAgenda> with SingleTickerProvid
                         borderRadius: BorderRadius.circular(10),
                         gradient: const LinearGradient(colors: [Color.fromRGBO(200, 140, 20, 1), Color.fromRGBO(173, 58, 37, 1)])
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 35.0, right: 10.0),
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: GestureDetector(
-                            onTap: () {
-                              signUserOut();
-                            },
-                            child: const Icon(
-                              Icons.logout,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
                     ),
                   ],
                 ),
@@ -744,7 +743,7 @@ class _EducatorAgendaState extends State<EducatorAgenda> with SingleTickerProvid
                       offset: const Offset(0, 45),
                       child: Container(
                         width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height/1.15 - 30,
+                        height: MediaQuery.of(context).size.height/1.15 - 80,
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.surface,
                           borderRadius: BorderRadius.circular(20)
@@ -918,21 +917,49 @@ class _EducatorAgendaState extends State<EducatorAgenda> with SingleTickerProvid
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                color: Colors.transparent,
-                                child: const Text(
-                                  textAlign: TextAlign.center,
-                                  "Welcome, Educator!",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Color.fromARGB(243, 248, 248, 248)
+                            Stack(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    color: Colors.transparent,
+                                    child: const Text(
+                                      textAlign: TextAlign.center,
+                                      "Welcome, Educator!",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Color.fromARGB(243, 248, 248, 248)
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            )
+                                Row(
+                                  children: [
+                                    Transform.translate(
+                                      offset: Offset(-10, 0),
+                                      child: Padding(
+                                        padding: EdgeInsets.only(top: 8.0),
+                                        child: Container(
+                                          alignment: Alignment.centerRight,
+                                          width: MediaQuery.of(context).size.width,
+                                          color: Colors.transparent,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              signUserOut();
+                                            },
+                                            child: const Icon(
+                                              Icons.logout,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ],
@@ -944,108 +971,144 @@ class _EducatorAgendaState extends State<EducatorAgenda> with SingleTickerProvid
             Expanded(
               child: Stack(
                 children: [
-                  Material(
-                    elevation: 20,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.5),
-                        color: Theme.of(context).colorScheme.surface,
+                  Column(
+                    children: [
+                      Expanded(child: SizedBox()),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(0),
+                          color: Theme.of(context).colorScheme.primaryContainer,
+                        ),
+                        width: MediaQuery.of(context).size.width,
+                        height: 87,
                       ),
-                      width: MediaQuery.of(context).size.width,
-                      height: 100,
+                    ],
+                  ),
+                  Transform.translate(
+                    offset: Offset(0, -45),
+                    child: Center(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Theme.of(context).colorScheme.surface,
+                        ),
+                        width: 105,
+                        height: 90,
+                      ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0, top: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => const StudentCheckIn()));
-                          },
-                          child: AnimatedBuilder(
-                            animation: _animationController,
-                            builder: (context, _) {
-                              return Container(
-                                width: 75,
-                                height: 75,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12.5),
-                                    gradient: LinearGradient(
-                                        colors: const [
-                                          Colors.blue,
-                                          Colors.lightBlue
-                                        ],
-                                        begin: _topAlignmentAnimation.value,
-                                        end: _bottomAlignmentAnimation.value)),
-                                child: const Icon(
-                                  Icons.table_rows_outlined,
-                                  color: Colors.white,
-                                ),
-                              );
-                            }
-                          ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Transform.translate(
+                        offset: Offset(0, -25),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) => const StudentCheckIn()));
+                              },
+                              child: AnimatedBuilder(
+                                animation: _animationController,
+                                builder: (context, _) {
+                                  return Container(
+                                    width: 75,
+                                    height: 75,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12.5),
+                                        gradient: LinearGradient(
+                                            colors: const [
+                                              Colors.blue,
+                                              Colors.lightBlue
+                                            ],
+                                            begin: _topAlignmentAnimation.value,
+                                            end: _bottomAlignmentAnimation.value)),
+                                    child: const Icon(
+                                      Icons.table_rows_outlined,
+                                      color: Colors.white,
+                                    ),
+                                  );
+                                }
+                              ),
+                            ),
+                          ],
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => const DetentionLog()));
-                          },
-                          child: AnimatedBuilder(
-                            animation: _animationController,
-                            builder: (context, _) {
-                              return Container(
-                                width: 75,
-                                height: 75,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12.5),
-                                    gradient: LinearGradient(
-                                        colors: const [
-                                          Color(0xffF99E43),
-                                          Color(0xFFDA2323),
-                                        ],
-                                        begin: _topAlignmentAnimation.value,
-                                        end: _bottomAlignmentAnimation.value)),
-                                child: const Icon(
-                                  Icons.table_chart_rounded,
-                                  color: Colors.white,
-                                ),
-                              );
-                            }
-                          ),
+                      ),
+                      Transform.translate(
+                        offset: Offset(0, -50),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) => const ScanPage()));
+                              },
+                              child: AnimatedBuilder(
+                                animation: _animationController,
+                                builder: (context, _) {
+                                  return Container(
+                                    width: 75,
+                                    height: 75,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(30),
+                                        gradient: LinearGradient(
+                                            colors: const [
+                                              Color(0xffF99E43),
+                                              Color(0xFFDA2323),
+                                            ],
+                                            begin: _topAlignmentAnimation.value,
+                                            end: _bottomAlignmentAnimation.value)),
+                                    child: const Icon(
+                                      Icons.barcode_reader,
+                                      color: Colors.white,
+                                    ),
+                                  );
+                                }
+                              ),
+                            ),
+                          ],
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => const ScanPage()));
-                          },
-                          child: AnimatedBuilder(
-                            animation: _animationController,
-                            builder: (context, _) {
-                              return Container(
-                                width: 75,
-                                height: 75,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12.5),
-                                    gradient: LinearGradient(
-                                        colors: const [
-                                          Colors.deepPurple,
-                                          Colors.purple,
-                                        ],
-                                        begin: _topAlignmentAnimation.value,
-                                        end: _bottomAlignmentAnimation.value)),
-                                child: const Icon(
-                                  Icons.barcode_reader,
-                                  color: Colors.white,
-                                ),
-                              );
-                            }
-                          ),
+                      ),
+                      Transform.translate(
+                        offset: Offset(0, -25),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) => const DetentionLog()));
+                              },
+                              child: AnimatedBuilder(
+                                animation: _animationController,
+                                builder: (context, _) {
+                                  return Container(
+                                    width: 75,
+                                    height: 75,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12.5),
+                                        gradient: LinearGradient(
+                                            colors: const [
+                                              Colors.deepPurple,
+                                              Colors.purple,
+                                            ],
+                                            begin: _topAlignmentAnimation.value,
+                                            end: _bottomAlignmentAnimation.value)),
+                                    child: const Icon(
+                                      Icons.table_chart_rounded,
+                                      color: Colors.white,
+                                    ),
+                                  );
+                                }
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               ),
