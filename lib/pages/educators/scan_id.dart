@@ -1029,7 +1029,7 @@ Future<void> _showDialog(String message, Color color) async {
                                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), // Adjusted style
                                       ),
                                       Text(
-                                        userData?['name'] ?? "---", // Placeholder
+                                        userData?['name'] ?? "Data not fetched", // Placeholder
                                         style: const TextStyle(fontSize: 18),
                                       ),
                                       const SizedBox(height: 8),
@@ -1038,7 +1038,7 @@ Future<void> _showDialog(String message, Color color) async {
                                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        _scanBarcodeResult ?? "---",
+                                        _scanBarcodeResult ?? "Data not fetched",
                                         style: TextStyle(fontSize: 18),
                                       ),
                                       const SizedBox(height: 8),
@@ -1047,7 +1047,7 @@ Future<void> _showDialog(String message, Color color) async {
                                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        userData?['grade']?.toString() ?? "---",
+                                        userData?['grade']?.toString() ?? "Data not fetched",
                                         style: TextStyle(fontSize: 18),
                                       ),
                                       const SizedBox(height: 8),
@@ -1056,7 +1056,7 @@ Future<void> _showDialog(String message, Color color) async {
                                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        userData?['year']?.toString() ?? "---",
+                                        userData?['year']?.toString() ?? "Data not fetched",
                                         style: const TextStyle(fontSize: 18),
                                       ),
                                     ],

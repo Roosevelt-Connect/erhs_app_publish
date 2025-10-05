@@ -242,8 +242,10 @@ class StudentCheckInState extends State<StudentCheckIn> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center, // Align children horizontally to the center
           children: [
             const SizedBox(height: 20),
+            // "Show Filters" button is now centered via the parent Column's crossAxisAlignment
             ElevatedButton(
               onPressed: _showMultiSelect,
               child: const Text('Show Filters'),
@@ -251,6 +253,8 @@ class StudentCheckInState extends State<StudentCheckIn> {
             const SizedBox(
                 height: 20), // Space between the button and the dropdown
             if (selectedItems.contains("Student ID")) ...[
+              // TextField will still be full width as it doesn't respect Center fully
+              // but its container is centered if it were smaller.
               TextField(
                 controller: _barcodeController,
                 decoration: const InputDecoration(
@@ -260,6 +264,7 @@ class StudentCheckInState extends State<StudentCheckIn> {
               const SizedBox(height: 20), // Space between each field
             ],
             if (selectedItems.contains("Timestamp")) ...[
+              // "Select Date Range" button is centered
               ElevatedButton(
                 onPressed: _selectDateRange,
                 child: const Text('Select Date Range'),
@@ -267,6 +272,7 @@ class StudentCheckInState extends State<StudentCheckIn> {
               const SizedBox(height: 20), // Space between each field
             ],
             if (selectedItems.contains("Purpose")) ...[
+              // CustomDropdown's container is centered, but the dropdown will try to fill available width.
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -289,6 +295,7 @@ class StudentCheckInState extends State<StudentCheckIn> {
               const SizedBox(height: 20), // Space between each field
             ],
             if (selectedItems.isNotEmpty)
+              // "Apply Filters" button is centered
               ElevatedButton(
                 onPressed: () async {
                   barcode = _barcodeController.text;
@@ -296,26 +303,31 @@ class StudentCheckInState extends State<StudentCheckIn> {
                 },
                 child: const Text('Apply Filters'),
               ),
+            // Wrap the data table's FutureBuilder chain in a Center
             Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: FutureBuilder<List<Map<String, dynamic>>>(
-                  future: getStudentCheckInData(barcode, selectedPurpose),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(child: Text('No data available'));
-                    } else {
-                      final data = snapshot.data!;
-                      return SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: formatAsTable(data),
-                      );
-                    }
-                  },
+              child: Center( // Center the entire Expanded area's content
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: FutureBuilder<List<Map<String, dynamic>>>(
+                    future: getStudentCheckInData(barcode, selectedPurpose),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return const Center(child: Text('No data available'));
+                      } else {
+                        final data = snapshot.data!;
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          // The DataTable itself is centered because its parent (SingleChildScrollView)
+                          // is a child of the Center widget.
+                          child: formatAsTable(data),
+                        );
+                      }
+                    },
+                  ),
                 ),
               ),
             ),
